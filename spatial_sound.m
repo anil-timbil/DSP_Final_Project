@@ -1,4 +1,4 @@
-%%  spatial_sound.m
+%% spatial_sound.m
 % Anil Timbil
 % June 22, 2019 
 % This program takes in an original sound array and outputs a 3D spatial 
@@ -18,17 +18,10 @@
 % There are 25 azimuths and 50 elevations in total, and we use the index 
 % of the vectors above to get the corresponding value. 
 
-% Changes in azimuth can be detected easily through use of headphones,
-% however changes in elevation are more difficult to detect. Subject 12
-% was chosen for this program since it provided a larger range for output
-% of sound samples. 
 
-
-function [y,f] = spatial_sound(Ia, IndE, file_name, original)
+function y = spatial_sound(Ia, IndE, Insig, fs, original)
 
 %% Pass in audio file to be spatialized
-[Insig, fs] = audioread(file_name);
-
 if original==1
     y = Insig;
     f = fs;
@@ -56,15 +49,13 @@ ramp(1:round(0.025*fs)) = hann(1:round(0.025*fs));
 ramp(end-round(0.025*fs)+1:end) = hann(round(0.025*fs):end);
 Insig = Insig.*ramp;
 
-for i = 1:N,
+for i = 1:N
    out(((i-1)*Lsig+1):(i*Lsig),1) = filter(hl(i,:),1,Insig)';
    out(((i-1)*Lsig+1):(i*Lsig),2) = filter(hr(i,:),1,Insig)';
-end;
+end
 
 %% Output spatialized sound
 max_val = 1.05*max(max(abs(out)));
-out = out/max_val;                 % scale
-%play_sound_array(out,fs);
+out = out/max_val;     
 y = out;
-f = fs;
 end
