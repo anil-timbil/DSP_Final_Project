@@ -7,7 +7,9 @@
 % less than 13, then it will start placing sound signals starting from
 % lower singing parts to higher parts. If there are more than 13,
 % additional azimuth/elevation pairs will be created from the original
-% pattern. Outputs can be found in the Output/Centroid file.
+% pattern. Outputs can be found in the Output/Centroid file. Sound signals 
+% can be passed in any order as the program will reorder them based on
+% their spectral centroid value. 
 
 function spectral_centroid_spatialize(df, mode, fs, play_sound, plot_graph)
 %% Fill in 0s for NaNs & add spectral centroid value to the last row
@@ -15,37 +17,23 @@ function spectral_centroid_spatialize(df, mode, fs, play_sound, plot_graph)
 for i=1:col_num
     column = df(:,i);
     signal = column(~isnan(column));
-    centroid_val = nanmean(spectral_centroid(signal, length(signal), graph_included, fs));
+    centroid_val = nanmean(spectral_centroid(signal, length(signal), plot_graph, fs));
     df(row_num+1,i)=centroid_val;
     df(length(signal):row_num,i)=0;
 end
+
 
 %% Sort based on spectral centroid value
 [temp, order] = sort(df(length(df),:));
 df = df(:,order);
 
 
-%% modify pattern if the number of soundtracks are more than 13. 
-pattern = get_pattern(mode);
-
-if col_num>length(pattern)/2 %add additional azimuth/elevations
-    repetition = fix(col_num/(length(pattern)/2))-1;
-    new_azimuth = pattern(1:length(pattern)/2);
-    new_elevation = pattern(length(pattern)/2+1:end);
-    for i=1:repetition
-        new_azimuth =  horzcat(new_azimuth,pattern(1:length(pattern)/2));
-        new_elevation =  horzcat(new_elevation,pattern(length(pattern)/2+1:end));
-    end
-    new_azimuth =  horzcat(new_azimuth,pattern(1:mod(col_num,length(pattern)/2)));
-    new_elevation =  horzcat(new_elevation,pattern(length(pattern)/2+1: length(pattern)/2 + mod(col_num,length(pattern)/2)));
-    pattern = horzcat(new_azimuth,new_elevation);
-end
-
 %% Create spatialized sound.
+pattern = get_pattern(mode, col_num);
 df(end,:) = [];
 mix = zeros(length(df),2);
 for i= 1:col_num
-    spatial = spatial_sound(pattern(i), pattern(col_num+i), df(:,i), fs, original); 
+    spatial = spatial_sound(pattern(i), pattern(col_num+i), df(:,i), fs); 
     mix(:,1) = mix(:,1) + spatial(:,1);
     mix(:,2) = mix(:,2) + spatial(:,2);
 end
@@ -63,6 +51,6 @@ if play_sound==true
     play_sound_array(mix,fs);
 end
 
-audiowrite(char(strcat("Output/","Centroid/",mode,".wav")), mix, fs);
+audiowrite(char(strcat("Output/Centroid/",mode,".wav")), mix, fs);
 
 end

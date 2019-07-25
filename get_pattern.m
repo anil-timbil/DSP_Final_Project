@@ -8,7 +8,7 @@
 % elevation. Please refer to Modes of Spatialization document for
 % visualization of these values.
 
-function pattern = get_pattern(mode)
+function pattern = get_pattern(mode, col_num)
 
 if mode=="original"
     pattern = [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]; %placeholder
@@ -44,6 +44,20 @@ elseif mode == "elevation_2"
     
 else
     disp("Please enter a valid pattern name. Eg: arc_1, orc_1,...");
-
 end
+
+%% modify pattern if the number of soundtracks are more than 13. 
+if col_num>length(pattern)/2 %add additional azimuth/elevations
+    repetition = fix(col_num/(length(pattern)/2))-1;
+    new_azimuth = pattern(1:length(pattern)/2);
+    new_elevation = pattern(length(pattern)/2+1:end);
+    for i=1:repetition
+        new_azimuth =  horzcat(new_azimuth,pattern(1:length(pattern)/2));
+        new_elevation =  horzcat(new_elevation,pattern(length(pattern)/2+1:end));
+    end
+    new_azimuth =  horzcat(new_azimuth,pattern(1:mod(col_num,length(pattern)/2)));
+    new_elevation =  horzcat(new_elevation,pattern(length(pattern)/2+1: length(pattern)/2 + mod(col_num,length(pattern)/2)));
+    pattern = horzcat(new_azimuth,new_elevation);
+end
+
 end

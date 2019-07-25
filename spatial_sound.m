@@ -19,14 +19,7 @@
 % of the vectors above to get the corresponding value. 
 
 
-function y = spatial_sound(Ia, IndE, Insig, fs, original)
-
-%% Pass in audio file to be spatialized
-if original==1
-    y = Insig;
-    f = fs;
-    return
-end
+function y = spatial_sound(Ia, IndE, Insig, fs)
 
 Insig = Insig';
 Insig = Insig(1, 1:end);
