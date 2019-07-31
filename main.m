@@ -15,7 +15,7 @@
 % "double_arc_2", "360_1", "360_2", "elevation_1", "elevation_2"
 
 program = "spectral_centroid"; 
-mode = "elevation_2";
+mode = "arc_1";
 
 play_sound=true; %type 'clear sound' in the command window to kill the audio at any time.
 plot_graph=true;
