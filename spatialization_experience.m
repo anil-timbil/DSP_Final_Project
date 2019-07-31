@@ -5,7 +5,7 @@
 % context of acapella music. Taking different 'modes' of spatialization,
 % this program places sound tracks at different spots following the
 % definitions of modes, and serves as a tool to help us experience
-% tiny nuances at a significant level. This file uses the list of sound 
+% tiny nuances at a significant level. This file uses the dataframe of sound 
 % signals that were created in the main file, and is designed to work with 
 % the current order of sound signals in the dataframe. 
 

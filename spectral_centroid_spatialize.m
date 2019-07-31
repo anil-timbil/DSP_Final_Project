@@ -3,13 +3,12 @@
 % July 11, 2019 
 % This program takes in a dataframe of sound signals along with a mode of
 % spatialization, and creates a spatialized sound for the given input
-% signals based on the mode's pattern. If the number of sound signals are
-% less than 13, then it will start placing sound signals starting from
-% lower singing parts to higher parts. If there are more than 13,
-% additional azimuth/elevation pairs will be created from the original
-% pattern. Outputs can be found in the Output/Centroid file. Sound signals 
-% can be passed in any order as the program will reorder them based on
-% their spectral centroid value. 
+% signals based on the mode's pattern. Placement will follow the order of 
+% the pattern with ascending spectral centroid values. If there are more than 
+% 13 sound signals, additional azimuth/elevation pairs will be created from 
+% the original pattern. Outputs can be found in the Output/Centroid file. 
+% Sound signals can be passed in any order as the program will reorder them 
+% based on ascending spectral centroid value. 
 
 function spectral_centroid_spatialize(df, mode, fs, play_sound, plot_graph)
 %% Fill in 0s for NaNs & add spectral centroid value to the last row

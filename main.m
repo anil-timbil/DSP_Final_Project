@@ -17,8 +17,8 @@
 program = "spectral_centroid"; 
 mode = "elevation_2";
 
-play_sound=false;
-plot_graph=false;
+play_sound=true; %type 'clear sound' in the command window to kill the audio at any time.
+plot_graph=true;
 
 
 %% Read in sound files (Co Co Beaux's Tupelo Honey)
